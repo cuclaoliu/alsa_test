@@ -8,7 +8,7 @@
 //#define play_file "../data_files/young_and_beautiful.wav"//
 #define record_file "../data_files/record_sound.wav"
 
-CAlsaSound snd;
+//CAlsaSound snd;
 
 void ReadWavHeader(FILE *pFile, WAVEFORMAT& waveformat) {
     WAVE_HEADER* pWaveHeader = new WAVE_HEADER;
@@ -22,7 +22,7 @@ void ReadWavHeader(FILE *pFile, WAVEFORMAT& waveformat) {
     memcpy(&waveformat, &pWaveHeader->waveformat, sizeof(WAVEFORMAT));
 }
 
-void PlayWave(const char *wavFile)
+void PlayWave(const char *wavFile, CAlsaSound& snd)
 {
     int len, ret;
 
@@ -73,7 +73,7 @@ void PlayWave(const char *wavFile)
     delete playBuffer;
 }
 
-void RecordWave(const char *recordFile) {
+void RecordWave(const char *recordFile, CAlsaSound& snd) {
     int sampleRate = 44100;
     int wBitsPerSample = 16;
     int nChannel = 2;
@@ -111,15 +111,15 @@ void RecordWave(const char *recordFile) {
 
 int main(int argc, char* argv[])
 {
-    //CAlsaSound snd;
+    CAlsaSound snd;
     //snd.ShowPCMDetail();
     std::cout<<"playing " << play_file <<"..."<<std::endl;
-    PlayWave(play_file);//argv[1]
+    PlayWave(play_file, snd);//argv[1]
     sleep(2);
     std::cout<<"play done."<<std::endl;
 
     std::cout<<"recording..."<<std::endl;
-    RecordWave(record_file);
+    RecordWave(record_file, snd);
     std::cout<<"record done."<<std::endl;
     sleep(2);
     exit(0);
